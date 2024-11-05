@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envie Suas Letras de Hip Hop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #141E30, #243B55);
+            color: #eee;
+            text-align: center;
+            padding: 2rem;
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(51, 51, 51, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 1s ease-in-out;
+            margin-bottom: 2rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            color: #FFD700;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            animation: textGlow 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 5px #FFD700; }
+            100% { text-shadow: 0 0 20px #FFD700, 0 0 30px #FFA500; }
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        textarea:focus, input:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            outline: none;
+        }
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #FFD700;
+            color: #222;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #FFA500;
+            transform: scale(1.05);
+        }
+        .btn:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .lyrics-container {
+            margin-top: 3rem;
+            text-align: left;
+        }
+        .lyric {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background-color: rgba(85, 85, 85, 0.9);
+            border-radius: 8px;
+            position: relative;
+            transition: transform 0.3s ease;
+            word-wrap: break-word;
+        }
+        .lyric:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .lyric h3 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+        .lyric pre {
+            white-space: pre-wrap;
+            font-family: inherit;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .delete-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
+        #loginButton {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #loginButton:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .error {
+            background-color: #ff4444;
+        }
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            text-align: center;
+            background-color: rgba(20, 30, 48, 0.8);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #ccc;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .footer p {
+            margin: 0;
+            line-height: 1.5;
+        }
+        .footer strong {
+            color: #FFD700;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Envie Sua Letra de Hip Hop</h1>
+        <p>Compartilhe sua letra de hiphop em nosso site! Escreva abaixo:</p>
+        
+        <form id="letraForm">
+            <div class="form-group">
+                <label for="nome">Seu Nome:</label>
+                <input type="text" id="nome" name="nome" required 
+                       maxlength="50" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,50}">
+            </div>
+            
+            <div class="form-group">
+                <label for="titulo">Título da Letra:</label>
+                <input type="text" id="titulo" name="titulo" required
+                       maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ0-9\s\-_]{2,100}">
+            </div>
+
+            <div class="form-group">
+                <label for="letra">Sua Letra:</label>
+                <textarea id="letra" name="letra" required
+                          minlength="10" maxlength="5000"></textarea>
+            </div>
+
+            <button type="submit" class="btn" id="submitButton">Enviar Letra</button>
+        </form>
+
+        <button id="loginButton">Admin Login</button>
+        
+        <div class="lyrics-container" id="submittedLyricsContainer">
+            <h2>Letras Enviadas</h2>
+            <div id="lyricsGrid"></div>
+        </div>
+
+        <div class="footer">
+            <p>Desenvolvido por <strong>Equipe 8</strong></p>
+            <p>Arthur Fidelis, Guilherme Luck, Nicolas Magalhães e Rodrido Tutume</p>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variáveis globais
+            let isAdmin = false;
+            const storedLyrics = JSON.parse(localStorage.getItem('lyrics')) || [];
+            const form = document.getElementById('letraForm');
+            const submitButton = document.getElementById('submitButton');
+            const loginButton = document.getElementById('loginButton');
+            const notification = document.getElementById('notification');
+
+            // Funções auxiliares
+            function showNotification(message, isError = false) {
+                notification.textContent = message;
+                notification.className = `notification ${isError ? 'error' : ''}`;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            function sanitizeInput(input) {
+                return input.replace(/<[^>]*>/g, '')
+                           .trim();
+            }
+
+            function validateInput(nome, titulo, letra) {
+                if (nome.length < 2 || nome.length > 50) {
+                    throw new Error('O nome deve ter entre 2 e 50 caracteres.');
+                }
+                if (titulo.length < 2 || titulo.length > 100) {
+                    throw new Error('O título deve ter entre 2 e 100 caracteres.');
+                }
+                if (letra.length < 10 || letra.length > 5000) {
+                    throw new Error('A letra deve ter entre 10 e 5000 caracteres.');
+                }
+                return true;
+            }
+
+            // Carregar letras salvas
+            function loadLyrics() {
+                const container = document.getElementById('lyricsGrid');
+                container.innerHTML = '';
+                storedLyrics.forEach((lyric, index) => {
+                    addLyricToPage(lyric.nome, lyric.titulo, lyric.letra, index);
+                });
+            }
+
+            function addLyricToPage(nome, titulo, letra, index) {
+                const lyricElement = document.createElement('div');
+                lyricElement.classList.add('lyric');
+                lyricElement.innerHTML = `
+                    <h3>${sanitizeInput(titulo)} - <small>${sanitizeInput(nome)}</small></h3>
+                    <pre>${sanitizeInput(letra)}</pre>
+                `;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-button');
+                deleteButton.textContent = 'Apagar';
+                deleteButton.style.display = isAdmin ? 'block' : 'none';
+                
+                deleteButton.addEventListener('click', function() {
+                    if (confirm('Tem certeza que deseja apagar esta letra?')) {
+                        storedLyrics.splice(index, 1);
+                        localStorage.setItem('lyrics', JSON.stringify(storedLyrics));
+                        loadLyrics();
+                        showNotification('Letra apagada com sucesso!');
+                    }
+                });
+                
+                lyricElement.appendChild(deleteButton);
+                document.getElementById('lyricsGrid').appendChild(lyricElement);
+            }
+
+            // Event Listeners
+            loginButton.addEventListener('click', function() {
+                const username = prompt('Nome de Usuário:');
+                if (!username) return;
+                
+                const password = prompt('Senha:');
+                if (!password) return;
+
+                if (username === 'equipe8' && password === 'admin') {
+                    isAdmin = true;
+                    showNotification('Login realizado com sucesso!');
+                    document.querySelectorAll('.delete-button')
+                            .forEach(button => button.style.display = 'block');
+                } else {
+                    showNotification('Credenciais inválidas!', true);
+                }
+            });
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                submitButton.disabled = true;
+
+                try {
+                    const nome = sanitizeInput(document.getElementById('nome').value);
+                    const titulo = sanitizeInput(document.getElementById('titulo').value);
+                    const letra = sanitizeInput(document.getElementById('letra').value);
+
+                    validateInput(nome, titulo, letra);
+
+                    const newLyric = { nome, titulo, letra };
+                    storedLyrics.unshift(newLyric);
+                    localStorage.setItem('lyrics', JSON.stringify(storedLyrics));
+
+                    loadLyrics();
+                    form.reset();
+                    showNotification('Letra enviada com sucesso!');
+                } catch (error) {
+                    showNotification(error.message, true);
+                } finally {
+                    submitButton.disabled = false;
+                }
+            });
+
+            // Inicialização
+            loadLyrics();
+        });
+    </script>
+</body>
+</html>
